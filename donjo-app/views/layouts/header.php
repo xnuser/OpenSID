@@ -1,9 +1,10 @@
-	<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
 		<title>Website Desa <?php echo unpenetration($desa['nama_desa']);?></title>
 		<meta content="utf-8" http-equiv="encoding">
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="shortcut icon" href="<?php echo base_url()?>favicon.ico" />
 		<link type='text/css' href="<?php echo base_url()?>assets/front/css/first.css" rel='Stylesheet' />
 		<?php if(is_file("desa/css/desa-web.css")): ?>
@@ -12,10 +13,28 @@
 		<link type='text/css' href="<?php echo base_url()?>assets/css/font-awesome.min.css" rel='Stylesheet' />
 		<link type='text/css' href="<?php echo base_url()?>assets/css/ui-buttons.css" rel='Stylesheet' />
 		<link type='text/css' href="<?php echo base_url()?>assets/front/css/colorbox.css" rel='Stylesheet' />
+		<link href="<?php echo base_url()?>assets/css/restive.css" media="all" rel="stylesheet" type="text/css" />
+
 		<script src="<?php echo base_url()?>assets/front/js/stscode.js"></script>
 		<script src="<?php echo base_url()?>assets/front/js/jquery.js"></script>
 		<script src="<?php echo base_url()?>assets/front/js/layout.js"></script>
 		<script src="<?php echo base_url()?>assets/front/js/jquery.colorbox.js"></script>
+
+		<!-- Install Restive.JS -->
+
+		<script type="text/javascript" src="<?php echo base_url()?>assets/js/restive.js-master/restive.min.js"></script>
+
+		<!-- Configure Restive.JS -->
+		<script>
+		    $( document ).ready(function() {
+		        $('body').restive({
+		            breakpoints: ['10000'],
+		            classes: ['nb'],
+		            turbo_classes: 'is_mobile=mobi,is_phone=phone,is_tablet=tablet,is_portrait=portrait,is_landscape=landscape'
+		        });
+		    });
+		</script>
+
 		<script>
 			$(document).ready(function(){
 				$(".group2").colorbox({rel:'group2', transition:"fade"});
@@ -28,20 +47,13 @@
 			<div id="topsection">
 				<div class="innertube">
 					<div id="header">
-						<div id="headercontent">
-							<div id="menu_vert">
-								<div id="menuwrapper">
-									<?php $this->load->view('partials/menu.tpl.php');?>
-								</div>
-							</div>
-							<div id="menu_vert2">
-								<?php if(count($slide)>0){
-									$this->load->view('layouts/slide.php');
-								} ?>
+						<div id="divlogo-img">
+							<div class="intube">
+								<a href="<?php echo site_url(); ?>first/">
+								<img src="<?php echo LogoDesa($desa['logo']);?>" alt="<?php echo $desa['nama_desa']?>"/>
+								</a>
 							</div>
 						</div>
-					</div>
-					<div id="headleft">
 						<div id="divlogo">
 							<div id="divlogo-txt">
 								<div class="intube">
@@ -54,14 +66,18 @@
 								</div>
 							</div>
 						</div>
-						<div id="divlogo-img">
-							<div class="intube">
-								<a href="<?php echo site_url(); ?>first/">
-								<img src="<?php echo LogoDesa($desa['logo']);?>" alt="<?php echo $desa['nama_desa']?>"/>
-								</a>
+						<div id="headercontent">
+							<div id="menu_vert">
+								<div id="menuwrapper">
+									<?php $this->load->view('partials/menu.tpl.php');?>
+								</div>
+							</div>
+							<div id="menu_vert2">
+								<?php if(count($slide)>0){
+									$this->load->view('layouts/slide.php');
+								} ?>
 							</div>
 						</div>
-						<br class="clearboth"/>
 					</div>
 
 					<?php if(count($teks_berjalan)>0){

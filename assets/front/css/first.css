@@ -125,12 +125,12 @@ background: #333;
 		padding-top:3px;
 		height:20px;
 	}
-#headercontent{margin-left: 350px;}
+#headercontent{float: right;}
 #headleft{float: left;width: 350px;margin-left: -100%;}
 #mainmenuget{clear:both;}
 
-#divlogo{float: left;width: 100%;}
-#divlogo-txt{margin-left: 100px;color:#204C88;}
+#divlogo{float: left;margin-right: 10px;}
+#divlogo-txt{color:#204C88;}
 	#menu_vert{border:1px solid #eee;border-top:1px solid #777;top:4px; height:30px;background: url(images/tb2.jpg) repeat center top;
 		box-shadow:1px 4px 4px #555;
 		-moz-box-shadow:-3px 1px 3px #000;
@@ -138,7 +138,7 @@ background: #333;
 	#menu_vert a{display:block;}
 	#menu_vert2 { top:5px;padding-left:0px; float:right;height:90px;}
 
-#divlogo-img{float: left;width: 100px;margin-left: -100%;text-align:center;}
+#divlogo-img{float: left;width: 100px;text-align:center;}
 #divlogo-img img{height:100px;margin-top:15px;}
 .clearboth{clear:both;}
 .intube{margin:1px;margin-top:0;}
