@@ -32,6 +32,92 @@
 		            classes: ['nb'],
 		            turbo_classes: 'is_mobile=mobi,is_phone=phone,is_tablet=tablet,is_portrait=portrait,is_landscape=landscape'
 		        });
+
+				/**
+				 * Sub Navbar Functionality
+				 */
+				var elem_body = $('body'),
+				    elem_navbar_sub = $('#navbar-sub'),
+				    elem_navbar_sub_children = $('#navbar-sub .navbar-sub-item'),
+				    subnav_status,
+					subnav_click_op,
+					elem_nav_button_id;
+
+				$('.nav-mob-button').on('click', function(e){
+					e.preventDefault();
+
+					//get the id attribute of the clicked item
+					elem_nav_button_id = $(this).attr('id');
+
+					//get the id of the last clicked button
+					elem_nav_button_id_last = elem_body.data('nav_button_id_last_clicked');
+
+					//check if submenu is active
+					subnav_status = elem_body.data('subnav_status');
+
+					//track the open/close state of sub navbar
+					if (subnav_status == 'on'){
+						switch(true)
+						{
+							case (elem_nav_button_id_last == elem_nav_button_id):
+								//same nav button was clicked and sub navbar is active, then close sub navbar
+								elem_navbar_sub.slideUp('fast', function(){
+									$(this).hide();
+								});
+								elem_body.data('subnav_status', 'off');
+								return;
+								break;
+						}
+					}
+					else {
+						//open sub navbar
+						elem_navbar_sub.slideDown('fast', function(){
+							$(this).show();
+						});
+						elem_body.data('subnav_status', 'on');
+					};
+
+					//clear the sub navbar area
+					elem_navbar_sub_children.hide();
+
+					//fill sub navbar with relevant content
+					switch(true)
+					{
+						case (elem_nav_button_id == 'nav-button-search'):
+							if(elem_body.data('nav_button_search_is_clicked') != 'on'){
+								$('#header-search').appendTo('#navbar-sub-search ul');
+							}
+							$('#navbar-sub-search').show();
+							elem_body.data('nav_button_search_is_clicked', 'on');
+							break;
+
+						case (elem_nav_button_id == 'nav-button-browse'):
+							if(elem_body.data('nav_button_browse_is_clicked') != 'on'){
+								$('#global-nav').children().appendTo('#navbar-sub-browse ul');
+							}
+
+							// $('#navbar-sub-browse').style.height = '300px';
+							$('#navbar-sub-browse').height('300px');
+							$('#navbar-sub-browse').show();
+							elem_body.data('nav_button_browse_is_clicked', 'on');
+							break;
+
+						case (elem_nav_button_id == 'nav-button-actions'):
+							if(elem_body.data('nav_button_actions_is_clicked') != 'on'){
+								$('#sign_up').appendTo('#navbar-sub-actions ul');
+								$('#login').appendTo('#navbar-sub-actions ul');
+								$('#header-actions-1').appendTo('#navbar-sub-actions ul');
+								$('#header-actions-2').appendTo('#navbar-sub-actions ul');
+							}
+							$('#navbar-sub-actions').show();
+							elem_body.data('nav_button_actions_is_clicked', 'on');
+							break;
+					}
+
+					//mark the id of the last button clicked
+					elem_body.data('nav_button_id_last_clicked', elem_nav_button_id);
+				});
+
 		    });
 		</script>
 
@@ -47,14 +133,19 @@
 			<div id="topsection">
 				<div class="innertube">
 					<div id="header">
-						<div id="divlogo-img">
-							<div class="intube">
-								<a href="<?php echo site_url(); ?>first/">
-								<img src="<?php echo LogoDesa($desa['logo']);?>" alt="<?php echo $desa['nama_desa']?>"/>
-								</a>
-							</div>
-						</div>
+			      <div id="nav-atas" class="nav-mob">
+			      	<ul>
+			        	<li><a href="#" id="nav-button-browse" class="nav-mob-button"><img class="nav-sprite icon-browse" src="/assets/images/transp.png"></a></li>
+			        </ul>
+			      </div>
 						<div id="divlogo">
+							<div id="divlogo-img">
+								<div class="intube">
+									<a href="<?php echo site_url(); ?>first/">
+									<img src="<?php echo LogoDesa($desa['logo']);?>" alt="<?php echo $desa['nama_desa']?>"/>
+									</a>
+								</div>
+							</div>
 							<div id="divlogo-txt">
 								<div class="intube">
 									<div id="siteTitle">
@@ -66,6 +157,11 @@
 								</div>
 							</div>
 						</div>
+			      <div id="nav-main" class="nav-mob">
+			      	<ul>
+			        	<li><a href="#" id="nav-button-browse" class="nav-mob-button"><img class="nav-sprite icon-browse" src="/assets/images/transp.png"></a></li>
+			        </ul>
+			      </div>
 						<div id="headercontent">
 							<div id="menu_vert">
 								<div id="menuwrapper">
@@ -77,6 +173,9 @@
 									$this->load->view('layouts/slide.php');
 								} ?>
 							</div>
+						</div>
+						<div id="navbar-sub">
+						    <div class="navbar-sub-item" id="navbar-sub-browse"><ul></ul></div>
 						</div>
 					</div>
 

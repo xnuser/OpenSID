@@ -130,7 +130,7 @@ background: #333;
 #mainmenuget{clear:both;}
 
 #divlogo{float: left;margin-right: 10px;}
-#divlogo-txt{color:#204C88;}
+#divlogo-txt{float:left; color:#204C88;}
 	#menu_vert{border:1px solid #eee;border-top:1px solid #777;top:4px; height:30px;background: url(images/tb2.jpg) repeat center top;
 		box-shadow:1px 4px 4px #555;
 		-moz-box-shadow:-3px 1px 3px #000;
