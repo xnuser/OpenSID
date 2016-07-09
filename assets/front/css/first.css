@@ -1436,6 +1436,10 @@ blockquote p {
   font-size: 15px; padding: 3px 10px;
 }
 
+/* Artikel headline */
+img.img-headline {
+  width: 90%;
+}
 
 
 
