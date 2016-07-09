@@ -20,6 +20,8 @@
 	}
 
 	function update($id=0){
+		$_SESSION['success']=1;
+		$_SESSION['error_msg'] = '';
 		$data = $_POST;
 		$lokasi_file = $_FILES['logo']['tmp_name'];
 		$tipe_file   = $_FILES['logo']['type'];
@@ -28,6 +30,8 @@
 		if (!empty($lokasi_file)){
 			if ($tipe_file != "image/jpeg" AND $tipe_file != "image/pjpeg" AND $tipe_file != "image/png"){
 				unset($data['logo']);
+				$_SESSION['error_msg'].= " -> Jenis file logo salah" . $tipe_file;
+				$_SESSION['success']=-1;
 			} else {
 				UploadLogo($nama_file,$old_logo,$tipe_file);
 				$data['logo'] = $nama_file;
@@ -41,14 +45,19 @@
 
 		$this->db->where('id',$id);
 		$outp = $this->db->update('config',penetration($data));
+		if (!$outp) {
+			$_SESSION['error_msg'].= " -> Error simpan data konfigurasi";
+			$_SESSION['success']=-1;
+		}
 
 		$pamong['pamong_nama'] = $data['nama_kepala_desa'];
 		$pamong['pamong_nip'] = $data['nip_kepala_desa'];
 		$this->db->where('pamong_id','707');
 		$outp = $this->db->update('tweb_desa_pamong',$pamong);
-
-		if($outp) $_SESSION['success']=1;
-			else $_SESSION['success']=-1;
+		if (!$outp) {
+			$_SESSION['error_msg'].= " -> Error simpan data pamong";
+			$_SESSION['success']=-1;
+		}
 	}
 
 	function update_kantor(){
