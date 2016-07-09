@@ -41,7 +41,8 @@
 				    elem_navbar_sub_children = $('#navbar-sub .navbar-sub-item'),
 				    subnav_status,
 					subnav_click_op,
-					elem_nav_button_id;
+					elem_nav_button_id,
+					subnav_height;
 
 				$('.nav-mob-button').on('click', function(e){
 					e.preventDefault();
@@ -83,34 +84,24 @@
 					//fill sub navbar with relevant content
 					switch(true)
 					{
-						case (elem_nav_button_id == 'nav-button-search'):
-							if(elem_body.data('nav_button_search_is_clicked') != 'on'){
-								$('#header-search').appendTo('#navbar-sub-search ul');
+						case (elem_nav_button_id == 'nav-button-browse-atas'):
+							if(elem_body.data('nav_button_browse_atas_is_clicked') != 'on'){
+								$('#global-nav.top').children().appendTo('#navbar-sub-browse-atas ul');
 							}
-							$('#navbar-sub-search').show();
-							elem_body.data('nav_button_search_is_clicked', 'on');
+							subnav_height = ($('#navbar-sub-browse-atas').find('li').length * 1.4).toString() + "em";
+							$('#navbar-sub-browse-atas').height(subnav_height);
+							$('#navbar-sub-browse-atas').show();
+							elem_body.data('nav_button_browse_atas_is_clicked', 'on');
 							break;
 
-						case (elem_nav_button_id == 'nav-button-browse'):
-							if(elem_body.data('nav_button_browse_is_clicked') != 'on'){
-								$('#global-nav').children().appendTo('#navbar-sub-browse ul');
+						case (elem_nav_button_id == 'nav-button-browse-main'):
+							if(elem_body.data('nav_button_browse_main_is_clicked') != 'on'){
+								$('#global-nav.main').children().appendTo('#navbar-sub-browse-main ul');
 							}
-
-							// $('#navbar-sub-browse').style.height = '300px';
-							$('#navbar-sub-browse').height('300px');
-							$('#navbar-sub-browse').show();
-							elem_body.data('nav_button_browse_is_clicked', 'on');
-							break;
-
-						case (elem_nav_button_id == 'nav-button-actions'):
-							if(elem_body.data('nav_button_actions_is_clicked') != 'on'){
-								$('#sign_up').appendTo('#navbar-sub-actions ul');
-								$('#login').appendTo('#navbar-sub-actions ul');
-								$('#header-actions-1').appendTo('#navbar-sub-actions ul');
-								$('#header-actions-2').appendTo('#navbar-sub-actions ul');
-							}
-							$('#navbar-sub-actions').show();
-							elem_body.data('nav_button_actions_is_clicked', 'on');
+							subnav_height = ($('#navbar-sub-browse-main').find('li').length * 1.4).toString() + "em";
+							$('#navbar-sub-browse-main').height(subnav_height);
+							$('#navbar-sub-browse-main').show();
+							elem_body.data('nav_button_browse_main_is_clicked', 'on');
 							break;
 					}
 
@@ -135,7 +126,7 @@
 					<div id="header">
 			      <div id="nav-atas" class="nav-mob">
 			      	<ul>
-			        	<li><a href="#" id="nav-button-browse" class="nav-mob-button"><img class="nav-sprite icon-browse" src="/assets/images/transp.png"></a></li>
+			        	<li><a href="#" id="nav-button-browse-atas" class="nav-mob-button"><img class="nav-sprite icon-browse" src="/assets/images/transp.png" title="Menu Pemerintah Desa"></a></li>
 			        </ul>
 			      </div>
 						<div id="divlogo">
@@ -159,7 +150,7 @@
 						</div>
 			      <div id="nav-main" class="nav-mob">
 			      	<ul>
-			        	<li><a href="#" id="nav-button-browse" class="nav-mob-button"><img class="nav-sprite icon-browse" src="/assets/images/transp.png"></a></li>
+			        	<li><a href="#" id="nav-button-browse-main" class="nav-mob-button"><img class="nav-sprite icon-browse" src="/assets/images/transp.png" title="Menu Artikel"></a></li>
 			        </ul>
 			      </div>
 						<div id="headercontent">
@@ -175,7 +166,8 @@
 							</div>
 						</div>
 						<div id="navbar-sub">
-						    <div class="navbar-sub-item" id="navbar-sub-browse"><ul></ul></div>
+						    <div class="navbar-sub-item" id="navbar-sub-browse-atas"><ul></ul></div>
+						    <div class="navbar-sub-item" id="navbar-sub-browse-main"><ul></ul></div>
 						</div>
 					</div>
 
