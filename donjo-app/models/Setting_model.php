@@ -8,16 +8,15 @@ class Setting_model extends CI_Model
     $pre = array();
     $CI = &get_instance();
 
+    // Terpaksa menjalankan migrasi, karena apabila tabel setting_aplikasi
+    // atau user_action belum ada, aplikasi tidak bisa di-load
+    if (!$this->db->table_exists('setting_aplikasi') OR  !$this->db->table_exists('user_action')) {
+      $this->load->model('database_model');
+      $this->database_model->migrasi_db_cri();
+    }
+
     if ($this->setting) return;
     if ($this->config->item("useDatabaseConfig")) {
-
-      // Terpaksa menjalankan migrasi, karena apabila tabel setting_aplikasi
-      // belum ada, aplikasi tidak bisa di-load, karena model ini di-autoload
-      if (!$this->db->table_exists('setting_aplikasi') ) {
-        $this->load->model('database_model');
-        $this->database_model->migrasi_db_cri();
-      }
-
       $pr = $this->db->order_by('key')->get("setting_aplikasi")->result();
       foreach($pr as $p)
       {

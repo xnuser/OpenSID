@@ -12,14 +12,6 @@ class User_model extends CI_Model
 
     function __construct() {
         parent::__construct();
-
-        // Terpaksa menjalankan migrasi, karena penambahan RBAC di v18.06
-        // mengharuskan adanya tabel yang diperlukan sebelum bisa akses controller manapun
-        if (!$this->db->table_exists('user_action') ) {
-            $this->load->model('database_model');
-            $this->database_model->migrasi_db_cri();
-        }
-
         // Untuk dapat menggunakan library upload
         $this->load->library('upload');
         // Untuk dapat menggunakan fungsi generator()
