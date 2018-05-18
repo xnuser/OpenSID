@@ -148,43 +148,54 @@ class Database_model extends CI_Model{
 
   function migrasi_211_ke_1806(){
     // Tambahkan perubahan database di sini
-	  
+
     // RBAC manager
-    $sqls = array("DROP TABLE `user_grup`",
-    "CREATE TABLE `user_action` (
-      `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-      `name` varchar(16) NOT NULL,
-      `description` text,
-      PRIMARY KEY (`id`)
-    ) ENGINE={$this->engine} DEFAULT CHARSET=utf8;
-    ","
-    INSERT INTO `user_action` (`id`, `name`, `description`) VALUES
-    (1,	'siteman/auth', 'authentication page'),
-    (2,	'first/*', 'halaman publik untuk pengguna website desa'),
-    (3,	'main/index', ''),
-    (4,	'web/*', 'Administrasi website desa.'),
-    (5,	'gallery/*', 'Administrasi gallery di website desa.'),
-    (6,	'dokumen/*', 'Administrasi dokumen situs web desa.'),
-    (7,	'user_setting/*', 'Ability to view and update user own profile setting.');
-    ","
-    CREATE TABLE `user_grup` (
-      `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-      `name` varchar(255) NOT NULL,
-      `description` text,
-      `action` varchar(255) NOT NULL,
-      PRIMARY KEY (`id`)
-    ) ENGINE={$this->engine} DEFAULT CHARSET=utf8;
-    ","
-    INSERT INTO `user_grup` (`id`, `name`, `description`, `action`) VALUES
-    (1,	'Administrator', 'Administrator has access to everything', '*'),
-    (2,	'Operator',	'Operator OpenSID',	'1,2,3,7'),
-    (3,	'Redaksi', '',	'1,2,3,4,5,6,7'),
-    (4,	'Kontributor', '', '1,2,3,4,5,6,7'),
-    (5,	'?',	'Untuk pengguna halaman publik website desa\r\n', '1,2,3')
-    ");
-    foreach ($sqls as $sql) {
-      $this->db->query($sql);
-	}
+
+    if (!$this->db->table_exists('user_action') ) {
+      $query = "
+        CREATE TABLE user_action (
+          id int(11) unsigned NOT NULL AUTO_INCREMENT,
+          name varchar(16) NOT NULL,
+          description text,
+          PRIMARY KEY (id)
+        ) ENGINE={$this->engine} DEFAULT CHARSET=utf8;
+      ";
+      $this->db->query($query);
+      $query = "
+        INSERT INTO user_action (id, name, description) VALUES
+        (1, 'siteman/auth', 'authentication page'),
+        (2, 'first/*', 'halaman publik untuk pengguna website desa'),
+        (3, 'main/index', ''),
+        (4, 'web/*', 'Administrasi website desa.'),
+        (5, 'gallery/*', 'Administrasi gallery di website desa.'),
+        (6, 'dokumen/*', 'Administrasi dokumen situs web desa.'),
+        (7, 'user_setting/*', 'Ability to view and update user own profile setting.');
+      ";
+      $this->db->query($query);
+      // Ganti tabel user_grup
+      $query = "DROP TABLE IF EXISTS user_grup";
+      $this->db->query($query);
+      $query = "
+        CREATE TABLE user_grup (
+          id int(11) unsigned NOT NULL AUTO_INCREMENT,
+          name varchar(255) NOT NULL,
+          description text,
+          action varchar(255) NOT NULL,
+          PRIMARY KEY (id)
+        ) ENGINE={$this->engine} DEFAULT CHARSET=utf8;
+      ";
+      $this->db->query($query);
+      $query = "
+        INSERT INTO user_grup (id, name, description, action) VALUES
+        (1, 'Administrator', 'Administrator has access to everything', '*'),
+        (2, 'Operator', 'Operator OpenSID', '1,2,3,7'),
+        (3, 'Redaksi', '',  '1,2,3,4,5,6,7'),
+        (4, 'Kontributor', '', '1,2,3,4,5,6,7'),
+        (5, '?',  'Untuk pengguna halaman publik website desa\r\n', '1,2,3')
+      ";
+      $this->db->query($query);
+    }
+
 
     //ubah icon kecil dan besar untuk modul Sekretariat
     $this->db->where('url','sekretariat')->update('setting_modul',array('ikon'=>'document-open-8.png', 'ikon_kecil'=>'fa fa-file fa-lg'));
