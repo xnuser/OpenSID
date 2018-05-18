@@ -169,7 +169,8 @@ class Database_model extends CI_Model{
         (4, 'web/*', 'Administrasi website desa.'),
         (5, 'gallery/*', 'Administrasi gallery di website desa.'),
         (6, 'dokumen/*', 'Administrasi dokumen situs web desa.'),
-        (7, 'user_setting/*', 'Ability to view and update user own profile setting.');
+        (7, 'user_setting/*', 'Ability to view and update user own profile setting.'),
+        (8, 'penduduk/*', 'Administrasi data penduduk.')
       ";
       $this->db->query($query);
       // Ganti tabel user_grup
@@ -188,7 +189,7 @@ class Database_model extends CI_Model{
       $query = "
         INSERT INTO user_grup (id, name, description, action) VALUES
         (1, 'Administrator', 'Administrator has access to everything', '*'),
-        (2, 'Operator', 'Operator OpenSID', '1,2,3,7'),
+        (2, 'Operator', 'Operator OpenSID', '1,2,3,7,8'),
         (3, 'Redaksi', '',  '1,2,3,4,5,6,7'),
         (4, 'Kontributor', '', '1,2,3,4,5,6,7'),
         (5, '?',  'Untuk pengguna halaman publik website desa\r\n', '1,2,3')
