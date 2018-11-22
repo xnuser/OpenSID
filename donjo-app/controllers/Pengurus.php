@@ -18,6 +18,7 @@ class Pengurus extends CI_Controller {
 		}
 		$this->load->model('pamong_model');
 		$this->load->model('header_model');
+		$this->load->model('penduduk_model');
 		$this->modul_ini = 200;
 	}
 
@@ -65,6 +66,11 @@ class Pengurus extends CI_Controller {
 			$data['form_action'] = site_url("pengurus/insert");
 		}
 
+		$data['penduduk'] = $this->penduduk_model->list_penduduk();
+		if (isset($_POST['id_pend']))
+			$data['individu'] = $this->penduduk_model->get_penduduk($_POST['id_pend']);
+		else
+			$data['individu'] = NULL;
 		$header = $this->header_model->get_data();
 		// Menampilkan menu dan sub menu aktif
 		$nav['act'] = 1;

@@ -7,7 +7,10 @@
 
 	public function list_data($aktif = false)
 	{
-		$sql = "SELECT u.* FROM tweb_desa_pamong u WHERE 1";
+		$sql = "SELECT u.*, p.nama, p.nik
+			FROM tweb_desa_pamong u
+			LEFT JOIN tweb_penduduk p ON u.id_pend = p.id
+			WHERE 1";
     $sql .= $aktif ? " AND u.pamong_status = '1'" : null;
 		$sql .= $this->search_sql();
 		$sql .= $this->filter_sql();
@@ -30,16 +33,21 @@
 
 	public function autocomplete()
 	{
-		$sql = "SELECT pamong_nama FROM tweb_desa_pamong
-					UNION SELECT pamong_nip FROM tweb_desa_pamong
-					UNION SELECT pamong_nik FROM tweb_desa_pamong";
+		$sql = "SELECT * FROM
+				(SELECT p.nama
+					FROM tweb_desa_pamong u
+					LEFT JOIN tweb_penduduk p ON u.id_pend = p.id) a
+				UNION SELECT p.nik
+					FROM tweb_desa_pamong u
+					LEFT JOIN tweb_penduduk p ON u.id_pend = p.id
+				UNION SELECT pamong_nip FROM tweb_desa_pamong";
 		$query = $this->db->query($sql);
 		$data  = $query->result_array();
 
 		$outp = '';
 		for ($i=0; $i<count($data); $i++)
 		{
-			$outp .= ",'" .addslashes($data[$i]['pamong_nama']). "'";
+			$outp .= ",'" .addslashes($data[$i]['nama']). "'";
 		}
 		$outp = substr($outp, 1);
 		$outp = '[' .$outp. ']';
@@ -53,7 +61,7 @@
 			$cari = $_SESSION['cari'];
 			$kw = $this->db->escape_like_str($cari);
 			$kw = '%' .$kw. '%';
-			$search_sql = " AND (u.pamong_nama LIKE '$kw' OR u.pamong_nip LIKE '$kw' OR u.pamong_nik LIKE '$kw')";
+			$search_sql = " AND (p.nama LIKE '$kw' OR u.pamong_nip LIKE '$kw' OR p.nik LIKE '$kw')";
 			return $search_sql;
 		}
 	}
@@ -84,11 +92,7 @@
 
 	public function insert()
 	{
-		$nip = $this->input->post('pamong_nip');
-		$nama = $this->input->post('pamong_nama');
-		$nik = $this->input->post('pamong_nik');
-		$jabatan = $this->input->post('jabatan');
-		$status = $this->input->post('pamong_status');
+		$_SESSION['success'] = 1;
 		$nama_file = '';
 		$lokasi_file = $_FILES['foto']['tmp_name'];
 		$tipe_file = $_FILES['foto']['type'];
@@ -99,7 +103,7 @@
 		  $nama_file = urlencode(generator(6)."_".$_FILES['foto']['name']);
 			if (!empty($lokasi_file) AND in_array($tipe_file, unserialize(MIME_TYPE_GAMBAR)))
 			{
-				UploadFoto($nama_file, $old_foto, $tipe_file);
+				UploadFoto($nama_file, $old_foto='', $tipe_file);
 			}
 			else
 			{
@@ -109,13 +113,18 @@
 			}
 		}
 
-		$sql = "INSERT INTO tweb_desa_pamong (pamong_nama,pamong_nip,pamong_nik,jabatan,pamong_status,pamong_tgl_terdaftar,foto)
-				VALUES (?,?,?,?,?,NOW(),?)";
+		$data['id_pend'] = $this->input->post('id_pend');
+		$data['pamong_nip'] = $this->input->post('pamong_nip');
+		$data['jabatan'] = $this->input->post('jabatan');
+		$data['pamong_status'] = $this->input->post('pamong_status');
+		$data['pamong_nosk'] = $this->input->post('pamong_nosk');
+		$data['pamong_tglsk'] = $this->input->post('pamong_tglsk');
+		$data['pamong_masajab'] = $this->input->post('pamong_masajab');
+		$data['pamong_tgl_terdaftar'] = NOW();
+		$data['foto'] = $nama_file;
+		$outp = $this->db->insert('tweb_desa_pamong', $data);
 
-		$outp = $this->db->query($sql, array($nama, $nip, $nik, $jabatan, $status, $nama_file));
-
-		if ($outp) $_SESSION['success'] = 1;
-		else $_SESSION['success'] = -1;
+		if (!$outp) $_SESSION['success'] = -1;
 	}
 
 	public function update($id=0)

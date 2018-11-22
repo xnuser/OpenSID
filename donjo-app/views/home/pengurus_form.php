@@ -9,7 +9,30 @@
 	</section>
 	<section class="content">
 		<div class="row" >
+			<div class="col-sm-12">
+				<div class="box box-info">
+					<div class="box-header with-border">
+						<a href="<?= site_url()?>pengurus" class="btn btn-social btn-flat btn-info btn-sm visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block"><i class="fa fa-arrow-circle-o-left"></i> Kembali Ke Daftar Staf</a>
+					</div>
+					<div class="box-body">
+						<form action="" id="main" name="main" method="POST"  class="form-horizontal">
+							<div class="form-group" >
+				  			<label class="col-sm-4 col-lg-2 control-label"  for="id_pend">NIK / Nama Penduduk </label>
+								<div class="col-sm-7">
+									<select class="form-contr	ol select2 input-sm" id="id_pend" name="id_pend"  onchange="formAction('main')" style="width:100%" >
+										<option selected="selected">-- Silakan Masukan NIK / Nama--</option>
+										<?php foreach ($penduduk as $data): ?>
+											<option value="<?= $data['id']?>" <?php if ($individu['id']==$data['id']): ?>selected<?php endif; ?>>NIK : <?= $data['nik']." - ".$data['nama']?></option>
+										<?php endforeach;?>
+									</select>
+								</div>
+							</div>
+	          </form>
+					</div>
+				</div>
+			</div>
 			<form id="validasi" action="<?=$form_action?>" method="POST" enctype="multipart/form-data"  class="form-horizontal">
+				<input type="hidden" name="id_pend" value="<?= $individu['id']?>">
 				<div class="col-md-3">
 					<div class="box box-primary">
 						<div class="box-body box-profile">
@@ -34,37 +57,76 @@
 				</div>
 				<div class="col-md-9">
 					<div class="box box-primary">
-						<div class="box-header with-border">
-							<a href="<?= site_url()?>pengurus" class="btn btn-social btn-flat btn-info btn-sm visible-xs-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block"><i class="fa fa-arrow-circle-o-left"></i> Kembali Ke Daftar Staf</a>
-						</div>
 						<div class="box-body">
 							<div class="form-group">
 								<label class="col-sm-4 control-label" for="pamong_nama">Nama Pegawai <?= ucwords($this->setting->sebutan_desa)?></label>
 								<div class="col-sm-7">
 									<input type="hidden" name="pamong_status" value="1">
-									<input id="pamong_nama" name="pamong_nama" class="form-control input-sm required" type="text" placeholder="Nama" value="<?= unpenetration($pamong['pamong_nama'])?>"></input>
+									<input id="pamong_nama" name="pamong_nama" class="form-control input-sm required" type="text" placeholder="Nama" value="<?= ($individu['nama'])?>" disabled="disabled"></input>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="pamong_nip">NIP</label>
+								<label class="col-sm-4 control-label" for="pamong_nip">NIP / NIAPD</label>
 								<div class="col-sm-7">
-									<input id="pamong_nip" name="pamong_nip" class="form-control input-sm" type="text" placeholder="NIP" value="<?=$pamong['pamong_nip']?>" ></input>
+									<input id="pamong_nip" name="pamong_nip" class="form-control input-sm" type="text" placeholder="NIP / NIAPD" value="<?=$pamong['pamong_nip']?>" ></input>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="pamong_nik">NIK</label>
+								<label class="col-sm-4 control-label" for="pamong_nik">Nomor Induk Kependudukan</label>
 								<div class="col-sm-7">
-									<input id="pamong_nik" name="pamong_nik" class="form-control input-sm" type="text" placeholder="NIK" value="<?=$pamong['pamong_nik']?>" ></input>
+									<input id="pamong_nik" name="pamong_nik" class="form-control input-sm" type="text" placeholder="Nomor Induk Kependudukan" value="<?=$individu['nik']?>" disabled="disabled"></input>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-sm-4 control-label" for="jabatan">Jabtan</label>
+								<label class="col-sm-4 control-label" for="pamong_ttl">Tempat/Tanggal Lahir</label>
 								<div class="col-sm-7">
-									<input id="jabatan" name="jabatan" class="form-control input-sm" type="text" placeholder="Jabatan" value="<?= unpenetration($pamong['jabatan'])?>" ></input>
+									<input name="pamong_ttl" class="form-control input-sm" type="text" placeholder="Tempat/Tanggal Lahir" value="<?= strtoupper($individu['tempatlahir'].' / '.$individu['tanggallahir'])?>" disabled="disabled"></input>
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="col-xs-12 col-sm-4 col-lg-4 control-label" for="status">Status</label>
+								<label class="col-sm-4 control-label" for="pamong_sex">Jenis Kelamin</label>
+								<div class="col-sm-7">
+									<input name="pamong_sex" class="form-control input-sm" type="text" placeholder="Jenis Kelamin" value="<?= $individu['sex']?>" disabled="disabled"></input>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label" for="pamong_pendidikan">Pendidikan</label>
+								<div class="col-sm-7">
+									<input name="pamong_pendidikan" class="form-control input-sm" type="text" placeholder="Pendidikan" value="<?= $individu['pendidikan_kk']?>" disabled="disabled"></input>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label" for="pamong_agama">Agama</label>
+								<div class="col-sm-7">
+									<input name="pamong_agama" class="form-control input-sm" type="text" placeholder="Agama" value="<?= $individu['agama']?>" disabled="disabled"></input>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label" for="pamong_nosk">Nomor SK Pengangkatan</label>
+								<div class="col-sm-7">
+									<input name="pamong_nosk" class="form-control input-sm" type="text" placeholder="Nomor SK Pengangkatan" value="<?= $pamong['pamong_nosk']?>" ></input>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label" for="pamong_tglsk">Tanggal SK Pengangkatan</label>
+								<div class="col-sm-7">
+									<input name="pamong_tglsk" class="form-control input-sm" type="text" placeholder="Tanggal SK Pengangkatan" value="<?= $pamong['pamong_tglsk']?>" ></input>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label" for="pamong_masajab">Masa Jabatan (Usia/Periode)</label>
+								<div class="col-sm-7">
+									<input name="pamong_masajab" class="form-control input-sm" type="text" placeholder="Contoh: 6 Tahun Periode Pertama (2015 s/d 2021)" value="<?= $pamong['pamong_masajab']?>" ></input>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-sm-4 control-label" for="jabatan">Jabatan</label>
+								<div class="col-sm-7">
+									<input id="jabatan" name="jabatan" class="form-control input-sm" type="text" placeholder="Jabatan" value="<?= $pamong['jabatan']?>" ></input>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-xs-12 col-sm-4 col-lg-4 control-label" for="status">Status Pegawai Desa</label>
 								<div class="btn-group col-xs-12 col-sm-8" data-toggle="buttons">
 									<label id="sx3" class="btn btn-info btn-flat btn-sm col-xs-6 col-sm-5 col-lg-3 form-check-label <?php if ($pamong['pamong_status'] == '1' OR $pamong['pamong_status'] == NULL): ?>active<?php endif ?>">
 										<input id="group1" type="radio" name="pamong_status" class="form-check-input" type="radio" value="1" <?php if ($pamong['pamong_status'] == '1' OR $pamong['pamong_status'] == NULL): ?>checked <?php endif ?> autocomplete="off"> Aktif

@@ -1278,4 +1278,26 @@
 		return $jml;
 	}
 
+	/*
+	 * Mengambil semua data penduduk untuk pilihan drop-down di form yang memerlukan
+	 */
+	public function list_penduduk()
+	{
+		$this->db
+				->select('u.id, nik, nama, w.dusun, w.rw, w.rt, u.sex')
+				->from('tweb_penduduk u')
+				->join('tweb_wil_clusterdesa w', 'u.id_cluster = w.id', 'left')
+				->where('status_dasar', '1');
+		$data = $this->db->get()->result_array();
+
+		//Formating Output untuk nilai variabel di javascript
+		foreach($data as $i => $row)
+		{
+			$data[$i]['nama'] = addslashes($row['nama']);
+			$data[$i]['alamat'] = addslashes("Alamat: RT-{$row[rt]}, RW-{$row[rw]} {$row[dusun]}");
+		}
+		return $data;
+	}
+
+
 }

@@ -1,3 +1,14 @@
+<script>
+	$(function()
+	{
+		var keyword = <?= $keyword?> ;
+		$( "#cari" ).autocomplete(
+		{
+			source: keyword,
+			maxShowItems: 10,
+		});
+	});
+</script>
 <div class="content-wrapper">
 	<section class="content-header">
 		<h1>Pemerintahan <?= ucwords($this->setting->sebutan_desa)?></h1>
@@ -89,13 +100,13 @@
 																		</div>
 																	</td>
 																	<td>
-																		<?= unpenetration($data['pamong_nama'])?>
+																		<?= $data['nama']?>
 																		<p class='text-blue'>
 																			<i>NIP :<?=$data['pamong_nip']?></i></br>
-																			<i>NIK :<?=$data['pamong_nik']?></i>
+																			<i>NIK :<?=$data['nik']?></i>
 																		</p>
 																	</td>
-																	<td><?= unpenetration($data['jabatan'])?></td>
+																	<td><?= $data['jabatan']?></td>
 																	<td>
 																		<?php if ($data['pamong_status'] == '1'): ?>
 																			<div title="Aktif">

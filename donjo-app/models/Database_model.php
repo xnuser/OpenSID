@@ -168,6 +168,35 @@
 
   private function migrasi_1811_ke_1812()
   {
+  	// Ubah struktur tabel tweb_desa_pamong
+  	if (!$this->db->field_exists('id_pend', 'tweb_desa_pamong'))
+  	{
+  		// Hapus kolom yg datanya diambil dari tabel tweb_penduduk
+			$this->dbforge->drop_column('tweb_desa_pamong', 'pamong_nama');
+			$this->dbforge->drop_column('tweb_desa_pamong', 'pamong_nik');
+			// Tambah kolom
+			$fields = array();
+			$fields['id_pend'] = array(
+					'type' => 'int',
+					'constraint' => 11
+			);
+			$fields['pamong_nosk'] = array(
+					'type' => 'varchar',
+					'constraint' => 20,
+					'default' => NULL
+			);
+			$fields['pamong_tglsk'] = array(
+					'type' => 'date',
+					'default' => NULL
+			);
+			$fields['pamong_masajab'] = array(
+					'type' => 'varchar',
+					'constraint' => 120,
+					'default' => NULL
+			);
+			$this->dbforge->add_column('tweb_desa_pamong', $fields);
+  	}
+
   	// Pada tweb_keluarga kosongkan nik_kepala kalau tdk ada penduduk dgn kk_level=1 dan id=nik_kepala untuk keluarga itu
   	$kk_kosong = $this->db->select('k.id')
   	  ->where('p.id is NULL')
