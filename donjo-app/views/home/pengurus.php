@@ -63,8 +63,15 @@
 																<th>No</th>
 																<th width='12%'>Aksi</th>
 																<th class="text-center">Foto</th>
-																<th width='50%'>Nama / NIP /NIK</th>
+																<th>Nama / NIP /NIK</th>
+																<th>Tempat, Tanggal Lahir</th>
+																<th>Jenis Kelamin</th>
+																<th>Pendidikan</th>
+																<th>Agama</th>
 																<th>Jabatan</th>
+																<th>Nomor SK</th>
+																<th>Tanggal SK</th>
+																<th>Masa/Periode Jabatan</th>
 																<th>Status</th>
 															</tr>
 														</thead>
@@ -106,7 +113,16 @@
 																			<i>NIK :<?=$data['nik']?></i>
 																		</p>
 																	</td>
+
+																	<td><?= $data['tempatlahir'].', '.$data['tanggallahir']?></td>
+																	<td><?= $data['sex']?></td>
+																	<td><?= $data['pendidikan_kk']?></td>
+																	<td><?= $data['agama']?></td>
+
 																	<td><?= $data['jabatan']?></td>
+																	<th><?= $data['pamong_nosk']?></td>
+																	<td><?= tgl_indo_out($data['pamong_tglsk'])?></td>
+																	<td><?= $data['pamong_masajab']?></td>
 																	<td>
 																		<?php if ($data['pamong_status'] == '1'): ?>
 																			<div title="Aktif">

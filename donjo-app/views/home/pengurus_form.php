@@ -107,10 +107,15 @@
 									<input name="pamong_nosk" class="form-control input-sm" type="text" placeholder="Nomor SK Pengangkatan" value="<?= $pamong['pamong_nosk']?>" ></input>
 								</div>
 							</div>
-							<div class="form-group">
+							<div class='form-group'>
 								<label class="col-sm-4 control-label" for="pamong_tglsk">Tanggal SK Pengangkatan</label>
 								<div class="col-sm-7">
-									<input name="pamong_tglsk" class="form-control input-sm" type="text" placeholder="Tanggal SK Pengangkatan" value="<?= $pamong['pamong_tglsk']?>" ></input>
+									<div class="input-group input-group-sm date">
+										<div class="input-group-addon">
+											<i class="fa fa-calendar"></i>
+										</div>
+										<input class="form-control input-sm pull-right tgl_1" name="pamong_tglsk" type="text" value="<?= $pamong['pamong_tglsk']?>">
+									</div>
 								</div>
 							</div>
 							<div class="form-group">

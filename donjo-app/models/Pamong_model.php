@@ -7,9 +7,12 @@
 
 	public function list_data($aktif = false)
 	{
-		$sql = "SELECT u.*, p.nama, p.nik
+		$sql = "SELECT u.*, p.nama as nama, p.nik as nik, p.tempatlahir, p.tanggallahir, x.nama AS sex, b.nama AS pendidikan_kk, g.nama AS agama
 			FROM tweb_desa_pamong u
 			LEFT JOIN tweb_penduduk p ON u.id_pend = p.id
+			LEFT JOIN tweb_penduduk_pendidikan_kk b ON p.pendidikan_kk_id = b.id
+			LEFT JOIN tweb_penduduk_sex x ON p.sex = x.id
+			LEFT JOIN tweb_penduduk_agama g ON p.agama_id = g.id
 			WHERE 1";
     $sql .= $aktif ? " AND u.pamong_status = '1'" : null;
 		$sql .= $this->search_sql();
@@ -152,11 +155,13 @@
 		}
 
 		$data = array(
-			"pamong_nip" => $this->input->post('pamong_nip'),
-			"pamong_nama" =>$this->input->post('pamong_nama'),
-			"pamong_nik" => $this->input->post('pamong_nik'),
-			"jabatan" => $this->input->post('jabatan'),
-			"pamong_status" => $this->input->post('pamong_status')
+			'id_pend' => $this->input->post('id_pend'),
+			'pamong_nip' => $this->input->post('pamong_nip'),
+			'jabatan' => $this->input->post('jabatan'),
+			'pamong_status' => $this->input->post('pamong_status'),
+			'pamong_nosk' => $this->input->post('pamong_nosk'),
+			'pamong_tglsk' => tgl_indo_in($this->input->post('pamong_tglsk')),
+			'pamong_masajab' => $this->input->post('pamong_masajab')
 		);
 		if (!empty($nama_file))
 		{

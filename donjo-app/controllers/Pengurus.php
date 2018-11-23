@@ -58,6 +58,7 @@ class Pengurus extends CI_Controller {
 		if ($id)
 		{
 			$data['pamong'] = $this->pamong_model->get_data($id);
+			if (!isset($_POST['id_pend'])) $_POST['id_pend'] = $data['pamong']['id_pend'];
 			$data['form_action'] = site_url("pengurus/update/$id");
 		}
 		else
